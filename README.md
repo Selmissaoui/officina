@@ -1,32 +1,18 @@
 # Officina
 
-<!-- DEMO VIDEO: after pushing, drag Officina-ad.mp4 (under 10 MB for free GitHub accounts) into this README in GitHub's editor and paste the generated link on its own line here, so it plays right on the repo page. -->
+**An infinite canvas where you watch AI agents browse, click and type, each with its own cursor. Pause and take over anytime.**
 
-**Officina is an agent canvas: a place where you can physically see what your AI agents are doing.** Watch them browse, click, type and take notes on an infinite canvas, each with its own cursor. It's cool to watch, and it makes agents far easier to trust and to debug.
+[![Officina teaser (30 s), click to play](assets/officina-teaser-preview.gif)](assets/officina-teaser.mp4)
 
-It started as a personal experiment and it is **not perfect**. It is released openly because I'd love for the community to build on it, fork it, break it and make it better. Pull requests, ideas and forks are very welcome.
+*Click the preview to play the 30-second teaser ([assets/officina-teaser.mp4](assets/officina-teaser.mp4)).*
 
-## Open source, build on it
+Officina is an agent canvas: a place where you can physically see what your AI agents are doing. It is a contained workspace (not an OS) with an infinite canvas: live browsers side by side, notes, files and folders. AI agents drive it over MCP, and everything they do happens in view. That makes agents far easier to trust and to debug.
 
-Officina is licensed under the [Apache License 2.0](LICENSE). You can use it for anything, including commercial projects, modify it and build your own products on top of it. You just have to keep the license and the [NOTICE](NOTICE) file, which credit the original author.
+It started as a personal experiment and it is **not perfect**. It is released openly so the community can build on it, fork it and make it better. Pull requests, ideas and forks are very welcome.
 
-> **Disclaimer:** Officina can connect to exchanges and place real orders if you approve auto-trading. It is provided as is, with no warranty. It is not financial advice. Use the paper account first and keep the limits low. You are responsible for what your agents do.
+## Quick start
 
-## Optional software it can use
-
-Officina works on its own. Some parts download or use extra software only if you choose to, and each keeps its own license:
-
-- **Brave browser** is downloaded on demand (checksum-verified) as the optional browser engine for canvas windows. It is not bundled.
-- **Ad and tracker filter lists** (EasyList, EasyPrivacy, uBlock and cookie-notice lists) are fetched for the built-in blocker, under their own licenses.
-- **Local models** through llama.cpp, LM Studio, Ollama and other servers are optional, and so are the models you load into them.
-- **Claude Code, Codex** or any other MCP client can connect to the local API if you want to.
-
-Bundled libraries (Electron, ccxt, the Ghostery adblocker under MPL-2.0, marked, DOMPurify) are listed in `package.json`.
-A contained workspace (not an OS) with an infinite canvas: live browsers side by side, notes, files and folders. AI agents drive it over MCP, and everything they do happens in view.
-
-## Start
-
-Run `dist/Officina.exe`. It is portable, so no install is needed. On first run it creates **`Officina-Data/`** next to the exe. That folder is the whole container: browser profiles, notes, files, encrypted keys, session cookies, the trade log and the activity log. Delete it to wipe everything.
+To build it from source, run `npm install` and then `npm run dist` (see [Develop](#develop)); this produces `dist/Officina.exe`. Run `dist/Officina.exe`. It is portable, so no install is needed. On first run it creates **`Officina-Data/`** next to the exe. That folder is the whole container: browser profiles, notes, files, encrypted keys, session cookies, the trade log and the activity log. Delete it to wipe everything.
 
 ## Features
 
@@ -53,7 +39,7 @@ Run `dist/Officina.exe`. It is portable, so no install is needed. On first run i
 
 Officina has its own API: an MCP server at `http://127.0.0.1:4780/mcp`, reachable only from this computer. In the app: toolbar → **Local API** (address, token, setup lines, every tool). Full reference: [docs/API.md](docs/API.md). Every connected app shows up under **Agents** with its own colour, and can be paused or kept away from trading on its own.
 
-## Connect an agent
+### Connect an agent
 
 Agent panel → copy the command. For Claude Code:
 
@@ -74,3 +60,21 @@ npm run dist       # build dist/Officina.exe
 ```
 
 Built with Electron 44, ccxt and plain ES modules (no bundler).
+
+## Optional software it can use
+
+Officina works on its own. Some parts download or use extra software only if you choose to, and each keeps its own license:
+
+- **Brave browser** is downloaded on demand (checksum-verified) as the optional browser engine for canvas windows. It is not bundled.
+- **Ad and tracker filter lists** (EasyList, EasyPrivacy, uBlock and cookie-notice lists) are fetched for the built-in blocker, under their own licenses.
+- **Local models** through llama.cpp, LM Studio, Ollama and other servers are optional, and so are the models you load into them.
+- **Claude Code, Codex** or any other MCP client can connect to the local API if you want to.
+
+Bundled libraries (Electron, ccxt, the Ghostery adblocker under MPL-2.0, marked, DOMPurify) are listed in `package.json`.
+A contained workspace (not an OS) with an infinite canvas: live browsers side by side, notes, files and folders. AI agents drive it over MCP, and everything they do happens in view.
+
+## License
+
+Officina is licensed under the [Apache License 2.0](LICENSE). You can use it for anything, including commercial projects, modify it and build your own products on top of it. You just have to keep the license and the [NOTICE](NOTICE) file, which credit the original author.
+
+> **Disclaimer:** Officina can connect to exchanges and place real orders if you approve auto-trading. It is provided as is, with no warranty. It is not financial advice. Use the paper account first and keep the limits low. You are responsible for what your agents do.
