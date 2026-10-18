@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" data-theme="pro" data-appearance="dark" data-mode="simple">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: ac:; frame-src ac:; connect-src 'self' ac:; object-src 'self' ac:">
+  <title>Officina</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme-game.css">
+</head>
+<body>
+  <header id="toolbar">
+    <div class="brand"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="brand-name">Officina</span></div>
+    <div class="tb-group create" role="toolbar" aria-label="Add to the canvas">
+      <button class="tb-btn" id="add-browser" title="New browser (Ctrl+B)"><span class="i i-globe"></span><span data-word="browser">Browser</span></button>
+      <button class="tb-btn" id="add-note" title="New note (Ctrl+N)"><span class="i i-note"></span><span data-word="note">Note</span></button>
+      <button class="tb-btn" id="add-file" title="Add files to the workspace"><span class="i i-file"></span><span data-word="file">File</span></button>
+      <button class="tb-btn" id="add-folder" title="Add a folder (copied into the workspace)"><span class="i i-folder"></span><span data-word="folder">Folder</span></button>
+    </div>
+    <button class="tb-search" id="search-btn" title="Search notes, files, pages and trades (Ctrl+K)"><span class="i i-search"></span><span class="tb-search-text">Search everything…</span><kbd>Ctrl K</kbd></button>
+    <div class="tb-right">
+      <span id="agent-strip" class="agent-strip" title="Agents working now"></span>
+      <button class="tb-stop" id="stop-btn" title="Pause every agent action and auto-trading"><span data-word="stop">Stop agent</span></button>
+    </div>
+  </header>
+
+  <nav id="rail" aria-label="Panels">
+    <button class="rail-btn panel-btn" data-panel="chat" title="Your agents: chat and give tasks (Ctrl+J)"><span class="i i-chat"></span><span class="rail-word" data-word="chat">Assistant</span><span class="dot" id="chat-dot"></span></button>
+    <button class="rail-btn panel-btn" data-panel="agents" title="Every AI working in the canvas"><span class="i i-users"></span><span class="rail-word" data-word="agents">Agents</span><span class="rail-badge" id="agent-count" hidden></span></button>
+    <button class="rail-btn panel-btn" data-panel="connectors" title="Talk to your agents from Telegram or Discord"><span class="i i-link"></span><span class="rail-word" data-word="connectors">Connectors</span><span class="dot" id="conn-dot"></span></button>
+    <span class="rail-sep"></span>
+    <button class="rail-btn panel-btn" data-panel="library" title="Everything you saved (Ctrl+K)"><span class="i i-lib"></span><span class="rail-word" data-word="library">Library</span></button>
+    <button class="rail-btn panel-btn" data-panel="activity" title="What every agent did"><span class="i i-list"></span><span class="rail-word" data-word="activity">Activity</span><span class="dot" id="activity-dot"></span></button>
+    <button class="rail-btn panel-btn game-only" data-panel="status" title="Status window"><span class="i i-star"></span><span class="rail-word" data-word="status">Status</span></button>
+    <span class="rail-sep"></span>
+    <button class="rail-btn panel-btn" data-panel="trading" title="Auto-trading approval, accounts and the trade log"><span class="i i-chart"></span><span class="rail-word" data-word="trading">Trading</span><span class="chip rail-chip" id="trade-chip">Off</span></button>
+    <button class="rail-btn panel-btn" data-panel="keys" title="API keys"><span class="i i-key"></span><span class="rail-word" data-word="keys">API keys</span></button>
+    <button class="rail-btn panel-btn" data-panel="agent" title="Local API (MCP): connect AI apps to Officina"><span class="i i-plug"></span><span class="rail-word" data-word="agent">Local API</span><span class="dot" id="mcp-dot"></span></button>
+    <span class="rail-fill"></span>
+    <button class="rail-btn panel-btn" data-panel="features" title="Every feature in one list"><span class="i i-grid"></span><span class="rail-word" data-word="features">Features</span></button>
+    <button class="rail-btn panel-btn" data-panel="settings" title="Settings (Ctrl+,)"><span class="i i-gear"></span><span class="rail-word" data-word="settings">Settings</span></button>
+  </nav>
+
+  <main id="stage">
+    <aside id="chat-dock" hidden aria-labelledby="chat-title">
+      <div class="drawer-head"><h2 id="chat-title"></h2><div class="row"><button class="x side-btn" id="chat-side" aria-label="Move chat to the other side"></button><button class="x" id="chat-close" title="Close" aria-label="Close">×</button></div></div>
+      <div id="chat-body" class="panel-chat"></div>
+    </aside>
+    <div id="viewport">
+      <div id="world"></div>
+      <div id="empty-hint" hidden>
+        <h2>An empty canvas</h2>
+        <p>Add a browser or a note, drop files here, or right-click for more. Drag the background to move around, scroll to zoom.</p>
+      </div>
+      <div id="drop-overlay" hidden><div>Drop to copy into the workspace</div></div>
+      <div id="canvas-controls" role="toolbar" aria-label="Canvas">
+        <button class="cc-btn" id="organize" title="Organise: browsers, notes and files each in their own block (Ctrl+Shift+O)"><span class="i i-grid"></span><span data-word="organize">Organise</span></button>
+        <span class="cc-sep"></span>
+        <button class="cc-btn icon" id="zoom-out" title="Zoom out (Ctrl −)">−</button>
+        <button class="cc-btn zoom" id="zoom-label" title="Back to 100% (Ctrl+1)">100%</button>
+        <button class="cc-btn icon" id="zoom-in" title="Zoom in (Ctrl +)">+</button>
+        <button class="cc-btn" id="zoom-fit" title="Show everything (Ctrl+0)"><span data-word="fit">Fit</span></button>
+        <span class="cc-sep"></span>
+        <button class="cc-btn icon" id="cursor-btn" title="AI cursor: see every move and click the AI makes" aria-label="AI cursor"><span class="i i-cursor"></span></button>
+      </div>
+    </div>
+    <aside id="drawer" hidden aria-labelledby="drawer-title">
+      <div class="drawer-head"><h2 id="drawer-title"></h2><button class="x" id="drawer-close" title="Close (Esc)" aria-label="Close">×</button></div>
+      <div id="drawer-body"></div>
+    </aside>
+  </main>
+
+  <footer id="statusbar">
+    <button class="sb-item" id="sb-api" title="Local API"><span class="dot"></span><span class="sb-text">Local API</span></button>
+    <button class="sb-item" id="sb-engine" title="Built-in model engine"><span class="dot"></span><span class="sb-text">No model loaded</span></button>
+    <button class="sb-item" id="sb-brave" title="Brave in this space"><span class="dot"></span><span class="sb-text">Brave</span></button>
+    <button class="sb-item" id="sb-connectors" title="Telegram and Discord"><span class="dot"></span><span class="sb-text">No chats linked</span></button>
+    <span class="sb-fill"></span>
+    <div class="ram sb-meter" id="ram" title="Memory"><span class="ram-label">RAM</span><span class="ram-bar"><i id="ram-fill"></i><b id="ram-own"></b></span><span class="ram-n" id="ram-n">…</span></div>
+    <button class="sb-item tokens" id="tokens" title="Tokens used"><span class="tok-icon" aria-hidden="true">◆</span><span id="tokens-n">0</span><span class="tok-word">tokens</span></button>
+    <span class="sb-item muted" id="sb-version"></span>
+  </footer>
+
+  <div id="paused-banner" hidden><span data-word="pausedBanner"></span> <button id="resume-btn"><span data-word="resume">Resume agent</span></button></div>
+  <div id="modal-root"></div>
+  <div id="toasts" aria-live="polite"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

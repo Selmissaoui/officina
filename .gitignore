@@ -1,0 +1,13 @@
+node_modules/
+dist/
+workspace-dev/
+*.tmp
+.claude/
+work/
+build-app/
+build-app.config.json
+dist-release/
+
+.env
+.env.*
+*.log

@@ -1,0 +1,79 @@
+{
+  "name": "officina",
+  "productName": "Officina",
+  "version": "1.0.0",
+  "description": "A contained workspace canvas with live browsers, notes and files that AI agents can drive over MCP.",
+  "main": "main/main.js",
+  "author": "Selmissaoui",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "electron .",
+    "check": "node tools/check-syntax.js",
+    "test": "npm run check && node --test test/run.js",
+    "dist": "npm run check && electron-builder --win portable",
+    "e2e": "node test/e2e.js",
+    "dist:mac": "npm run check && electron-builder --mac dmg zip",
+    "release:win": "npm run check && node tools/release.js --win",
+    "release:mac": "npm run check && node tools/release.js --mac"
+  },
+  "build": {
+    "appId": "app.officina.desktop",
+    "productName": "Officina",
+    "files": [
+      "main/**",
+      "renderer/**",
+      "preload.js",
+      "package.json"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "build/icon.png"
+    },
+    "portable": {
+      "artifactName": "Officina.exe"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "npmRebuild": false,
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity",
+      "icon": "build/icon-1024.png",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "artifactName": "Officina-${version}-mac-${arch}.${ext}"
+    },
+    "dmg": {
+      "artifactName": "Officina-${version}-${arch}.dmg",
+      "title": "Officina"
+    }
+  },
+  "dependencies": {
+    "@ghostery/adblocker": "2.18.2",
+    "@ghostery/adblocker-electron": "2.18.2",
+    "@ghostery/adblocker-electron-preload": "2.18.2",
+    "bytenode": "1.7.0",
+    "ccxt": "^4.5.85",
+    "dompurify": "^3.4.16",
+    "marked": "^18.1.0"
+  },
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3",
+    "javascript-obfuscator": "5.7.0"
+  },
+  "allowScripts": {
+    "electron@44.7.0": true,
+    "electron-winstaller@5.4.0": true
+  },
+  "overrides": {
+    "@ghostery/adblocker-content": "2.18.2",
+    "@ghostery/adblocker-extended-selectors": "2.18.2",
+    "tldts-experimental": "7.4.15",
+    "tldts-core": "7.4.15"
+  }
+}

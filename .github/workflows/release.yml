@@ -1,0 +1,71 @@
+# Builds the shareable (locked, bytecode) version of Officina for macOS and Windows.
+# Run it from the Actions tab (Run workflow) or by pushing a tag like v1.1.0.
+# The builds appear as downloadable artifacts on the run's page.
+name: Release builds
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  mac:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14        # Apple Silicon (M1 and newer)
+            arch: arm64
+          - runner: macos-15-intel  # Intel Macs
+            arch: x64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: node tools/release.js --mac --${{ matrix.arch }}
+      - name: Start the built app and check it
+        run: node tools/smoke.js "$(find dist-release -maxdepth 3 -name Officina.app | head -1)/Contents/MacOS/Officina" smoke
+      - uses: actions/upload-artifact@v6
+        with:
+          name: smoke-mac-${{ matrix.arch }}
+          path: smoke/
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v6
+        with:
+          name: Officina-mac-${{ matrix.arch }}
+          path: |
+            dist-release/*.dmg
+            dist-release/*.zip
+          if-no-files-found: error
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: node tools/release.js --win
+      - name: Start the built app and check it
+        run: node tools/smoke.js dist-release/win-unpacked/Officina.exe smoke
+      - uses: actions/upload-artifact@v6
+        with:
+          name: smoke-windows
+          path: smoke/
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v6
+        with:
+          name: Officina-windows
+          path: dist-release/Officina.exe
+          if-no-files-found: error
